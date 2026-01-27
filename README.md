@@ -14,7 +14,6 @@ source venv/bin/activate  # En Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 ### 3. Instalar y Configurar la Base de Datos (PostgreSQL)
-Instalar PostgreSQL en Linux
 En Linux Fedora: sudo dnf install postgresql-server
 En Ubuntu: sudo apt install postgresql
 
@@ -41,6 +40,12 @@ DB_NAME=cultura_db
 
 ### 🛠️ Ejecución
 Ejecuta el pipeline completo por consola:
+Si no ves el (venv) en la terminal, actívalo primero:
+source venv/bin/activate
+Instala todo lo que definimos en el requirements.txt:
+pip install -r requirements.txt
+
+Ejecuta el archivo principal:
 python3 main.py
 
 #### ⚙️ Cómo Adaptar a Nuevas Fuentes

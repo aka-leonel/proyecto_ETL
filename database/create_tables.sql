@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS totales_procesados (
     categoria VARCHAR(100),
     provincia VARCHAR(100),
     cantidad INT,
-    fecha_carga DATE [cite: 69]
+    fecha_carga DATE 
 );

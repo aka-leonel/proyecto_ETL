@@ -20,29 +20,33 @@ def normalizar_datos(df, categoria):
     # 3. Seleccionar solo las columnas finales requeridas 
     df = df[FINAL_COLUMNS].copy()
     
-    # 4. Agregar columna de categoría y fecha de carga 
-    df['categoría'] = categoria
+    # 4. Agregar columna de categoria y fecha de carga 
+    df['categoria'] = categoria
     df['fecha_carga'] = datetime.now().date()
     
     return df
 
 def generar_tabla_totales(df_unificado):
     """
-    Crea la tabla de agregados: totales por categoría, fuente y provincia/categoría
+    Crea la tabla de agregados con información clara por provincia y categoría.
     """
-    # Totales por categoría
-    totales_cat = df_unificado.groupby('categoría').size().reset_index(name='cantidad')
-    totales_cat['descripcion'] = 'Total por categoría'
+    # --- 1. Totales por categoría (Nacional) ---
+    totales_cat = df_unificado.groupby('categoria').size().reset_index(name='cantidad')
+    totales_cat['descripcion'] = 'Total nacional por categoría'
+    totales_cat['provincia'] = 'Todas'  # Para que no quede nulo y sea claro
     
-    # Totales por provincia y categoría
-    totales_prov_cat = df_unificado.groupby(['provincia', 'categoría']).size().reset_index(name='cantidad')
-    totales_prov_cat['descripcion'] = 'Total por provincia y categoría'
+    # --- 2. Totales por provincia y categoría ---
+    totales_prov_cat = df_unificado.groupby(['provincia', 'categoria']).size().reset_index(name='cantidad')
+    totales_prov_cat['descripcion'] = 'Total provincial por categoría'
+    # Aquí la columna 'provincia' ya existe gracias al groupby
     
-    # Combinar resultados (puedes estructurarlos según necesites para la DB)
+    # --- 3. Combinar ---
     resumen = pd.concat([totales_cat, totales_prov_cat], ignore_index=True)
     resumen['fecha_carga'] = datetime.now().date()
     
-    return resumen
+    # Reordenar columnas para que la lectura sea lógica: Descripcion | Provincia | Categoria | Cantidad
+    column_order = ['descripcion', 'provincia', 'categoria', 'cantidad', 'fecha_carga']
+    return resumen[column_order]
 
 def ejecutar_transformacion(rutas_archivos):
     """

@@ -1,14 +1,10 @@
 import logging
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from decouple import config
 
-# Configuración de logs
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 def obtener_engine():
-    """
-    Crea la conexión a la base de datos usando variables de entorno.
-    """
     try:
         user = config('DB_USER')
         password = config('DB_PASS')
@@ -16,22 +12,38 @@ def obtener_engine():
         port = config('DB_PORT')
         db_name = config('DB_NAME')
         
-        # URL de conexión para PostgreSQL
         url = f"postgresql://{user}:{password}@{host}:{port}/{db_name}"
-        engine = create_engine(url)
-        return engine
+        return create_engine(url)
     except Exception as e:
         logging.error(f"Error al configurar la conexión: {e}")
         return None
 
-def cargar_datos(df, nombre_tabla):
+def ejecutar_sql_script(ruta_sql):
     """
-    Carga un DataFrame a la base de datos reemplazando los datos previos.
+    Lee y ejecuta un archivo .sql para crear las tablas.
     """
     engine = obtener_engine()
     if engine:
         try:
-            # Reemplaza los registros existentes con if_exists='replace' 
+            with open(ruta_sql, 'r') as f:
+                query = text(f.read())
+            
+            with engine.connect() as conn:
+                conn.execute(query)
+                conn.commit()
+            logging.info(f"Script SQL {ruta_sql} ejecutado correctamente.")
+        except Exception as e:
+            logging.error(f"Error al ejecutar el script SQL: {e}")
+
+def cargar_datos(df, nombre_tabla):
+    """
+    Carga los datos reemplazando la información previa.
+    """
+    engine = obtener_engine()
+    if engine:
+        try:
+            # Reemplazamos los datos. 'replace' de pandas recrea la tabla, 
+            # pero como ya ejecutamos el SQL, 'replace' es seguro aquí.
             df.to_sql(nombre_tabla, engine, if_exists='replace', index=False)
             logging.info(f"Tabla '{nombre_tabla}' cargada exitosamente.")
         except Exception as e:
