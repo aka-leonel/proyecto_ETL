@@ -1,3 +1,55 @@
+--- INICIO DEL PROYECTO
 Se creó el repo en Github y se clonó a la pc local.
 Se creó el árbol de archivos, la estructura base del proyecto.
-Se definieron en el archivo config.py las URLs de los archivos .CSV para descargar, así como también el mapeo de columnas necesario para la normalización.
+
+--- PARA LA REUSABILIDAD DEL PROYECTO
+Para que este proyecto sea reutilizable, se definieron en el archivo config.py las URLs de los archivos .CSV para descargar (en el diccionario SOURCES), así como también el mapeo de columnas necesario para la normalización (FINAL_COLUMNS y COLUMN_MAPPING).
+
+--- extract.py
+Se implementó extract.py que descarga los archivos de SOURCES y crea carpetas para guardarlos segun categoría y fecha. Los nombres de los meses están en español como es pedido.
+
+Se testeó el correcto funcionamiento de la extracción ejecutando en el terminal:
+$ python -m scripts.extract
+
+
+--- transform.py
+Se implementó la lógica de transform.py. Para que sea flexible, usaremos el mapeo de config.py para que el script sea agnóstico a los nombres originales de las columnas. Cumplimos con el requerimiento de cargar como nulos los datos que la fuente no brinde.
+Renombramos campos heterogéneos (como "CP" o "Cod_Loc") a nombres estandarizados en la base de datos. Al final transform.py entrega unm DataFrame listo para ser usado por load.py
+
+----PostgreSQL: instalación y configuración
+El proyecto se desarrolló en Fedora 43
+Instalación de PostgreSQL por línea de comandos:
+sudo dnf install postgresql-server postgresql-contrib postgresql-devel
+sudo postgresql-setup --initdb
+sudo systemctl start postgresql
+sudo systemctl enable postgresql
+
+-- CREDENCIALES
+Configurar usuario y base de datos
+Debemos crear la base de datos. En la terminal entra a postgres:
+sudo -u postgres psql
+
+Una vez dentro del promp mde postgres ingresar:
+CREATE DATABASE cultura_db;
+CREATE USER usuario_db_cultura WITH PASSWORD 'es_un_secreto';
+GRANT ALL PRIVILEGES ON DATABASE cultura_db TO usuario_db_cultura;
+\q
+
+--- .env 
+Se escribieron las credenciales para la base de datos
+
+--- load.py
+Conexión: Implementada con SQLAlchemy.
+Configuración: Uso de archivo .env y decouple.
+Actualización: Reemplazo total de registros existentes.
+
+--- requirements.txt
+Se detallaron las dependencias necesarias
+
+--- main.py
+Se redactó el orquestador main.py
+
+
+--- readme.md 
+redactado con instrucciones para descarga, instalación de PostgreSQL y ejecución.
+

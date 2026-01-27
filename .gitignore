@@ -1,0 +1,21 @@
+# Entorno Virtual
+venv/
+ENV/
+env/
+
+# Variables sensibles 
+.env
+
+# Archivos de Python / Caché
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Datos descargados (recomendado si son pesados)
+data/
+
+# Logs
+*.log
+
+# Base de datos local
+*.db
