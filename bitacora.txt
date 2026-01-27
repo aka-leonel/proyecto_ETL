@@ -1,0 +1,3 @@
+Se creó el repo en Github y se clonó a la pc local.
+Se creó el árbol de archivos, la estructura base del proyecto.
+Se definieron en el archivo config.py las URLs de los archivos .CSV para descargar, así como también el mapeo de columnas necesario para la normalización.
