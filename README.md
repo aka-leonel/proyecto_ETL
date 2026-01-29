@@ -2,7 +2,7 @@
 
 Este proyecto es un pipeline ETL que automatiza la extracción, transformación y carga de datos culturales de Argentina (Museos y Bibliotecas) en una base de datos PostgreSQL.
 
-## 🚀 Instalación y Setup
+## Instalación
 
 ### 1. Clonar el repositorio
 git clone https://github.com/aka-leonel/proyecto_ETL.git
@@ -39,7 +39,7 @@ DB_HOST=localhost
 DB_PORT=5432
 DB_NAME=cultura_db
 
-### 🛠️ Ejecución
+### Ejecución
 Ejecuta el pipeline completo por consola:
 Si no ves el (venv) en la terminal, actívalo primero:
 source venv/bin/activate
@@ -49,7 +49,7 @@ pip install -r requirements.txt
 Ejecuta el archivo principal:
 python3 main.py
 
-#### ⚙️ Cómo Adaptar a Nuevas Fuentes
+#### Cómo Adaptar a Nuevas Fuentes
 Para usar este proyecto con otros archivos CSV o cambiar el mapeo de columnas, edita el archivo config.py:
 
 SOURCES: Agrega o modifica las URLs de los archivos CSV.
