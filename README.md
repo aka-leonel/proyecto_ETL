@@ -10,7 +10,8 @@ cd proyecto_ETL
 
 ### 2. Configurar el Entorno Virtual
 python3 -m venv venv
-source venv/bin/activate  # En Windows: venv\Scripts\activate
+source venv/bin/activate  
+En Windows: venv\Scripts\activate
 pip install -r requirements.txt
 
 ### 3. Instalar y Configurar la Base de Datos (PostgreSQL)
